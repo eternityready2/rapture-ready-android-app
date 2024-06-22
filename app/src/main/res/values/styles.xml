@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -8,7 +8,7 @@
         <item name="actionOverflowButtonStyle">@style/OverflowButtonStyle</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >@color/white</item>
         <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>
     </style>
 
@@ -45,4 +45,26 @@
         // Set the theme of the Activity that directly follows your splash screen.
         <item name="postSplashScreenTheme">@style/AppTheme</item>  # Required.
     </style>
+
+
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconSize">24dp</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationView.ActiveText</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationView.InactiveText</item>
+        <item name="itemIconTint">@color/bottom_nav_color_selector</item>
+        <item name="itemTextColor">@color/bottom_nav_color_selector</item>
+    </style>
+
+    <style name="BottomNavigationView.ActiveText" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/active_color</item>
+
+    </style>
+
+    <style name="BottomNavigationView.InactiveText" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/inactive_color</item>
+    </style>
+
+
 </resources>

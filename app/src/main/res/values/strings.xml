@@ -9,11 +9,10 @@
     <string name="Rapture_FB"><b>Watch TV</b></string>
     <string name="Rapture_Donate"><b>Donate</b></string>
 
-    <string name="Rapture_Ready_link">https://raptureready.com</string>
-    <string name="Rapture_TV_link">https://raptureready.tv</string>
-    <string name="Rapture_Radio_link">https://listen.eternityready.com</string>
+    <string name="Rapture_Ready_link">https://www.raptureready.com/</string>
+    <string name="Rapture_TV_link">https://www.raptureready.tv/</string>
+    <string name="Rapture_Radio_link">https://listen.eternityready.com/</string>
     <string name="Rapture_FB_link">https://eternityready.tv/live-tv</string>
-    <string name="Rapture_Donate_link">https://donorbox.org/eternity-ready-radio</string>
 
     <string name="menu_refresh">Refresh</string>
     <string name="menu_share">Share</string>
@@ -28,4 +27,13 @@
     <string name="theme_number">Theme %1$d</string>
     <string name="default_theme_value">Default Theme</string>
     <string name="dialog_title">Select Theme</string>
+    <string name="browse_rapture_ready">Browse Rapture Ready</string>
+    <string name="eternity_ready_media">Eternity Ready Media</string>
+    <string name="connect_with_us">Connect with US</string>
+    <string name="tv">TV</string>
+    <string name="rr_tv">RR TV</string>
+    <string name="home">Home</string>
+    <string name="more">More</string>
+    <string name="watch_tv">Watch TV</string>
+    <string name="Rapture_R">Rapture R</string>
 </resources>
