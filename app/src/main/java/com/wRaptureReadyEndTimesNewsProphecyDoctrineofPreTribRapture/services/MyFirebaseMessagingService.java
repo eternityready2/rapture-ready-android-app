@@ -37,14 +37,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-        // Convert drawable resource to Bitmap
-        Bitmap largeIconBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.notification_logo);
-
-
         String channelId = "Default_Channel";
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.notification_logo) // Add your app's notification icon here
-                .setLargeIcon(largeIconBitmap) // Add your app's notification icon here
+                .setSmallIcon(R.drawable.ic_stat_product_logo_trans) // Add your app's notification icon here
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(remoteMessage.getNotification().getBody())
                 .setAutoCancel(true)

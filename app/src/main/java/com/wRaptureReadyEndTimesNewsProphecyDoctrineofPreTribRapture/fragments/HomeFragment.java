@@ -2,6 +2,7 @@ package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
@@ -164,9 +167,14 @@ public class HomeFragment extends Fragment {
 
         connectDataAdapter.setOnClickListener(item -> {
             if (item.title.equals("Call US")){
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + "14172335389"));
-                startActivity(callIntent);
+                if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+                }else {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + "14172335389"));
+                    startActivity(callIntent);
+                }
+
             }else {
                 fragmentContainerView.setVisibility(View.VISIBLE);
                 home_grids_bg.setVisibility(View.GONE);
