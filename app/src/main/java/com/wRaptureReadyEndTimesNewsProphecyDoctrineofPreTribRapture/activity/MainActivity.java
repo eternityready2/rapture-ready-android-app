@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
             //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new HomeFragment(), "FRAGMENT").commitNow();
         }
 
-        sendNotification();
+        // sendNotification();
 
         AppRating.Builder builder = new AppRating.Builder(this).setMinimumDays(3).setMinimumDaysToShowAgain(3).setMinimumLaunchTimes(6);
         builder.showIfMeetsConditions();
