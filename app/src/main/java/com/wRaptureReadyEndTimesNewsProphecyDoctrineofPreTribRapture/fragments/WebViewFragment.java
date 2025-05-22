@@ -1,12 +1,12 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,29 +15,37 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.BuildConfig;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
-import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.activity.About;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter.FragmentPagerAdapter;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.Constants;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ThemeModel;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class WebViewFragment extends Fragment {
 
     private final String[] webUrls = new String[5];
-    private final String[] titles = new String[5];
     private Toolbar toolbar;
     private ViewPager2 pager2;
     private FragmentPagerAdapter adapter;
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
     private BottomNavigationView navigationView;
+
+    private final Map<Integer, Runnable> runnableMap = new HashMap<>();
 
     public WebViewFragment() {
 
@@ -90,7 +98,7 @@ public class WebViewFragment extends Fragment {
         pager2.setOffscreenPageLimit(5);
         pager2.setUserInputEnabled(false);
 
-        pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        /*pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -117,88 +125,16 @@ public class WebViewFragment extends Fragment {
                         break;
                 }
             }
-        });
+        });*/
 
         navigationView.setOnItemSelectedListener(item -> {
-
-            if (item.getItemId() == R.id.home) {
-                pager2.setCurrentItem(0);
-                Fragment fragment = getFragAt(0, getChildFragmentManager());
-                if (fragment instanceof HomeFragment) ((HomeFragment) fragment).reload();
-                toolbar.setTitle("Home");
-            }
-
-            if (item.getItemId() == R.id.repture_ready) {
-                pager2.setCurrentItem(1);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[1]);
-                toolbar.setTitle("Repture Ready");
-            }
-
-            if (item.getItemId() == R.id.watch_tv) {
-                pager2.setCurrentItem(2);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[2]);
-                toolbar.setTitle("Watch TV");
-            }
-
-            if (item.getItemId() == R.id.radio) {
-                pager2.setCurrentItem(3);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[3]);
-                toolbar.setTitle("Radio");
-            }
-
-            if (item.getItemId() == R.id.more) {
-                pager2.setCurrentItem(4);
-                Fragment fragment = getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof MoreFragment) ((MoreFragment) fragment).reload();
-                toolbar.setTitle("More");
-            }
-
-            return true;
-        });
-
-        navigationView.setOnItemReselectedListener(item -> {
-            if (item.getItemId() == R.id.home) {
-                pager2.setCurrentItem(0);
-                Fragment fragment = getFragAt(0, getChildFragmentManager());
-                if (fragment instanceof HomeFragment) ((HomeFragment) fragment).reload();
-                toolbar.setTitle("Home");
-            }
-
-            if (item.getItemId() == R.id.repture_ready) {
-                pager2.setCurrentItem(1);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[1]);
-                toolbar.setTitle("Repture Ready");
-            }
-
-            if (item.getItemId() == R.id.watch_tv) {
-                pager2.setCurrentItem(2);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[2]);
-                toolbar.setTitle("Tv");
-            }
-
-            if (item.getItemId() == R.id.radio) {
-                pager2.setCurrentItem(3);
-                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof WebViewContainer)
-                    ((WebViewContainer) fragment).Return(webUrls[3]);
-                toolbar.setTitle("Radio");
-            }
-
-            if (item.getItemId() == R.id.more) {
-                pager2.setCurrentItem(4);
-                Fragment fragment = getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
-                if (fragment instanceof MoreFragment) ((MoreFragment) fragment).reload();
-                toolbar.setTitle("More");
+            Runnable runnable = runnableMap.get(item.getItemId());
+            if (runnable != null) {
+                runnable.run();
+                return true;
+            } else {
+                Toast.makeText(requireContext(), "Item not found", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
 
@@ -215,6 +151,63 @@ public class WebViewFragment extends Fragment {
 
         preferences.registerOnSharedPreferenceChangeListener(listener);
 
+        ItemsData.getItems().observe(getViewLifecycleOwner(), items -> {
+            for (Pair<String, List<ButtonItem>> item: items) {
+                if (item.first.equalsIgnoreCase("BottomNav")) {
+                    List<ButtonItem> buttons = item.second;
+                    navigationView.getMenu().clear();
+
+                    for (int i = 0; i < buttons.size(); i++) {
+                        ButtonItem button = buttons.get(i);
+                        MenuItem menuItem = navigationView.getMenu().add(
+                                Menu.NONE, i, Menu.NONE, button.text);
+                        Glide.with(this)
+                                .asDrawable()
+                                .load(Constants.BASE_URL + button.icon)
+                                .override(48, 48)
+                                .into(new CustomTarget<Drawable>() {
+                                    @Override
+                                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                        menuItem.setIcon(resource);
+                                    }
+
+                                    @Override
+                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                                        // Handle cleanup if needed
+                                    }
+                                });
+
+                        runnableMap.put(menuItem.getItemId(), () -> {
+                            if (Objects.requireNonNull(menuItem.getTitle()).toString()
+                                    .equalsIgnoreCase("Home")) {
+                                pager2.setCurrentItem(0);
+                                Fragment fragment = getFragAt(0, getChildFragmentManager());
+                                if (fragment instanceof HomeFragment) ((HomeFragment) fragment).reload();
+                                toolbar.setTitle("Home");
+                            } else {
+                                pager2.setCurrentItem(menuItem.getItemId());
+                                Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
+                                if (fragment instanceof WebViewContainer)
+                                    ((WebViewContainer) fragment).Return(button.link);
+                                toolbar.setTitle(button.text);
+                            }
+                        } );
+                    }
+
+                    MenuItem menuItem = navigationView.getMenu().add(
+                            Menu.NONE, View.generateViewId(), Menu.NONE, "More");
+                    menuItem.setIcon(R.drawable.more);
+                    runnableMap.put(menuItem.getItemId(), () -> {
+                        pager2.setCurrentItem(4);
+                        Fragment fragment = getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
+                        if (fragment instanceof MoreFragment) ((MoreFragment) fragment).reload();
+                        toolbar.setTitle("More");
+                    });
+
+                    toolbar.setTitle("Home");
+                }
+            }
+        });
 //        toolbar.inflateMenu(R.menu.toolbar_menu);
 //
 //        toolbar.setOnMenuItemClickListener((menuItem) -> {
@@ -248,6 +241,12 @@ public class WebViewFragment extends Fragment {
 //            }
 //            return true;
 //        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        runnableMap.clear();
+        super.onDestroyView();
     }
 
     public Fragment getFragAt(int currentItem, FragmentManager manager) {

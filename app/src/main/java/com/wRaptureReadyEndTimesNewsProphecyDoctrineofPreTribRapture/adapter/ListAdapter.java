@@ -1,6 +1,5 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,20 +7,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
-import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.AdapterItems;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.Constants;
 
 import java.util.ArrayList;
 
 public class ListAdapter extends BaseAdapter {
 
-    private Context context;
-    private final ArrayList<ItemsData> data;
+    private final ArrayList<AdapterItems> data;
     private OnItemClickListener listener;
 
     // Constructor
-    public ListAdapter(Context context, ArrayList<ItemsData> data) {
-        this.context = context;
+    public ListAdapter(ArrayList<AdapterItems> data) {
         this.data = data;
     }
 
@@ -42,19 +41,21 @@ public class ListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View listview;
-
         if (convertView == null) {
-            listview = new View(context);
-            listview = inflater.inflate(R.layout.list_item, null);
+            listview = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item, parent, false);
 
             TextView textView = listview.findViewById(R.id.txt);
             textView.setText(data.get(position).title);
 
             ImageView icon = listview.findViewById(R.id.icon);
-            icon.setImageResource(data.get(position).icon);
+            String iconUrl = data.get(position).icon;
+            if (iconUrl == null) {
+                icon.setImageResource(data.get(position).iconRes);
+            } else {
+                Glide.with(icon).load(Constants.BASE_URL + iconUrl).into(icon);
+            }
 
             listview.setOnClickListener(v -> listener.onItemClick(data.get(position)));
         } else {
@@ -69,7 +70,7 @@ public class ListAdapter extends BaseAdapter {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ItemsData item);
+        void onItemClick(AdapterItems item);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,19 +7,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
-import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.Constants;
 
 import java.util.ArrayList;
 
 public class GridHomeAdapter extends BaseAdapter {
-    private Context context;
-    private final ArrayList<ItemsData> data;
+    private final ArrayList<ButtonItem> data;
     private OnItemClickListener listener;
 
     // Constructor
-    public GridHomeAdapter(Context context, ArrayList<ItemsData> data) {
-        this.context = context;
+    public GridHomeAdapter(ArrayList<ButtonItem> data) {
         this.data = data;
     }
 
@@ -41,19 +40,16 @@ public class GridHomeAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View gridView;
-
         if (convertView == null) {
-            gridView = new View(context);
-            gridView = inflater.inflate(R.layout.home_grid_item, null);
+            gridView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.home_grid_item, parent, false);
 
             TextView textView = gridView.findViewById(R.id.txt);
-            textView.setText(data.get(position).title);
+            textView.setText(data.get(position).text);
 
             ImageView icon = gridView.findViewById(R.id.icon);
-            icon.setImageResource(data.get(position).icon);
+            Glide.with(icon).load(Constants.BASE_URL + data.get(position).icon).into(icon);
 
             gridView.setOnClickListener(v -> listener.onItemClick(data.get(position)));
         } else {
@@ -68,7 +64,7 @@ public class GridHomeAdapter extends BaseAdapter {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ItemsData item);
+        void onItemClick(ButtonItem item);
     }
 
 }

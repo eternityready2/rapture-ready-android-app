@@ -9,6 +9,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Pair;
 import android.view.KeyEvent;
 
 import androidx.core.app.ActivityCompat;
@@ -19,9 +20,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.messaging.RemoteMessage;
 import com.suddenh4x.ratingdialog.AppRating;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments.WebViewFragment;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.network.NetworkAndDataConversionClass;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity {
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,16 @@ public class MainActivity extends BaseActivity {
 
         AppRating.Builder builder = new AppRating.Builder(this).setMinimumDays(3).setMinimumDaysToShowAgain(3).setMinimumLaunchTimes(6);
         builder.showIfMeetsConditions();
+
+        executorService.execute(() -> {
+            List<Pair<String, List<ButtonItem>>> data =
+                    NetworkAndDataConversionClass.fetchDataFromNetwork();
+            if (data != null) {
+                runOnUiThread(() -> {
+                    ItemsData.setItems(data);
+                });
+            }
+        });
 
     }
 

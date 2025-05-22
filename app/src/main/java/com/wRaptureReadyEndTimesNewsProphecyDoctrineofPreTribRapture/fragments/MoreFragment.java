@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +23,23 @@ import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.BuildConfig
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.activity.About;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter.ListAdapter;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.AdapterItems;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MoreFragment extends Fragment {
 
 
     private ListView listView;
     private ListAdapter adapter;
-    private ArrayList<ItemsData> data;
+    private ArrayList<AdapterItems> data;
     private FragmentContainerView fragmentContainerView;
     private boolean fragmentVisible = false;
 
-    public MoreFragment() {
-
-    }
+    public MoreFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,17 +79,26 @@ public class MoreFragment extends Fragment {
 
         data = new ArrayList<>();
 
-
-        data.add(new ItemsData("Rapture Ready TV", R.drawable.repture_ready_tv, "https://www.raptureready.tv"));
-        data.add(new ItemsData("Donate", R.drawable.donate, "https://donorbox.org/eternity-ready-radio"));
-        data.add(new ItemsData("Share", R.drawable.share, ""));
-        data.add(new ItemsData("Rate", R.drawable.rate, ""));
-        data.add(new ItemsData("Themes", R.drawable.theme, ""));
-        data.add(new ItemsData("About", R.drawable.about, ""));
-        data.add(new ItemsData("Exit", R.drawable.exit, ""));
-
-        adapter = new ListAdapter(getContext(), data);
+        adapter = new ListAdapter(data);
         listView.setAdapter(adapter);
+
+        ItemsData.getItems().observe(getViewLifecycleOwner(), items -> {
+            data.clear();
+            for (Pair<String, List<ButtonItem>> item : items) {
+                if (item.first.equalsIgnoreCase("more")) {
+                    for (ButtonItem buttonItem : item.second) {
+                        data.add(new AdapterItems(buttonItem.text, buttonItem.icon, buttonItem.link));
+                    }
+                    data.add(new AdapterItems("Share", R.drawable.share, ""));
+                    data.add(new AdapterItems("Rate", R.drawable.rate, ""));
+                    data.add(new AdapterItems("Themes", R.drawable.theme, ""));
+                    data.add(new AdapterItems("About", R.drawable.about, ""));
+                    data.add(new AdapterItems("Exit", R.drawable.exit, ""));
+
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         adapter.setOnClickListener(item -> {
             if (!item.url.isEmpty()) {
@@ -137,13 +148,11 @@ public class MoreFragment extends Fragment {
             }
 
         });
-
     }
 
     public void reload(){
         fragmentContainerView.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
     }
-
 
 }

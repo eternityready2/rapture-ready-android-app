@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments.HomeFragment;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments.MoreFragment;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments.WebViewContainer;

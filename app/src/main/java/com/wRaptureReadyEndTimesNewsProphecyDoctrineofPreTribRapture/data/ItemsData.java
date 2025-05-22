@@ -1,18 +1,24 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data;
 
 
-import androidx.annotation.DrawableRes;
+import android.util.Pair;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import java.util.List;
 
 public class ItemsData {
 
-    public String title;
-    public int icon;
-    public String url;
+    private static final MutableLiveData<List<Pair<String, List<ButtonItem>>>> items =
+            new MutableLiveData<>();
 
-    public ItemsData(String title, @DrawableRes int icon, String url) {
-        this.title = title;
-        this.icon = icon;
-        this.url = url;
+    public static LiveData<List<Pair<String, List<ButtonItem>>>> getItems() {
+        return items;
+    }
+
+    public static void setItems(List<Pair<String, List<ButtonItem>>> list) {
+        items.postValue(list);
     }
 
 }

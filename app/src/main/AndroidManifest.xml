@@ -4,15 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture">
 
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="true" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-
 
     <application
         android:allowBackup="true"
@@ -39,11 +33,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-
         <service
             android:name=".services.MyFirebaseMessagingService"
-            android:exported="true"
-            android:permission="TODO">
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
