@@ -5,14 +5,14 @@ plugins {
 //key alias -> Key0 password -> ymcmb1913
 android {
     namespace "com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture"
         minSdk 21
-        targetSdk 34
-        versionCode 30
-        versionName "1.6.2"
+        targetSdk 35
+        versionCode 34
+        versionName "1.6.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -4,34 +4,25 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Pair;
-import android.view.KeyEvent;
+import android.view.View;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.messaging.RemoteMessage;
 import com.suddenh4x.ratingdialog.AppRating;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.R;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ItemsData;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments.WebViewFragment;
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.network.NetworkAndDataConversionClass;
+import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.utility.AppExecutors;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity {
-
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +40,13 @@ public class MainActivity extends BaseActivity {
         AppRating.Builder builder = new AppRating.Builder(this).setMinimumDays(3).setMinimumDaysToShowAgain(3).setMinimumLaunchTimes(6);
         builder.showIfMeetsConditions();
 
-        executorService.execute(() -> {
+        AppExecutors.getSingleThreadExecutor().execute(() -> {
             List<Pair<String, List<ButtonItem>>> data =
-                    NetworkAndDataConversionClass.fetchDataFromNetwork();
+                    NetworkAndDataConversionClass.fetchDataFromNetwork(this);
             if (data != null) {
                 runOnUiThread(() -> {
                     ItemsData.setItems(data);
+                    findViewById(R.id.loading_dialog).setVisibility(View.GONE);
                 });
             }
         });
@@ -85,7 +77,13 @@ public class MainActivity extends BaseActivity {
         notificationManager.notify(0, notificationBuilder.build());
     }
 
-//    @Override
+    @Override
+    protected void onDestroy() {
+        AppExecutors.shutdown();
+        super.onDestroy();
+    }
+
+    //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        if(keyCode == KeyEvent.KEYCODE_BACK){
 //            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
