@@ -1,5 +1,6 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,9 @@ public class ListAdapter extends BaseAdapter {
             if (iconUrl == null) {
                 icon.setImageResource(data.get(position).iconRes);
             } else {
-                Glide.with(icon).load(Constants.BASE_URL + iconUrl).into(icon);
+                Glide.with(icon)
+                        .load(Uri.parse(Constants.BASE_IMAGE_PATH + iconUrl))
+                        .into(icon);
             }
 
             listview.setOnClickListener(v -> listener.onItemClick(data.get(position)));

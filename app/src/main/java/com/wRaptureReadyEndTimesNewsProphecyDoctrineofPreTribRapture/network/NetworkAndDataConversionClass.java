@@ -24,6 +24,7 @@ import java.util.List;
 
 public class NetworkAndDataConversionClass {
     public static List<Pair<String, List<ButtonItem>>> fetchDataFromNetwork(Context context) {
+        Constants.resetBaseImagePath();
         try {
             Gson gson = new Gson();
             HttpURLConnection connection =
@@ -104,25 +105,36 @@ public class NetworkAndDataConversionClass {
     }
 
     private static ApiResponse.Data getDataFromCache(Context context) {
+        Gson gson = new Gson();
+        Type responseType = new TypeToken<ApiResponse.Data>() {}.getType();
         File file = new File(context.getFilesDir(), "DATA_FOLDER/cache.json");
 
         if (file.exists()) {
             //noinspection IOStreamConstructor
             try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file))) {
-                Gson gson = new Gson();
-                Type responseType = new TypeToken<ApiResponse.Data>() {}.getType();
-
                 return gson.fromJson(reader, responseType);
             } catch (Exception e) {
                 if (BuildConfig.DEBUG) {
                     Log.e("NetworkClass", "Error loading from cache: " + e.getMessage(), e);
                 }
-
-                return null;
+                return getDataFromAssets(context, gson, responseType);
             }
         } else {
             if (BuildConfig.DEBUG) { Log.e("NetworkClass", "Cache file not found"); }
+            return getDataFromAssets(context, gson, responseType);
+        }
+    }
 
+    private static ApiResponse.Data getDataFromAssets(Context context, Gson gson, Type type) {
+        Constants.setBaseImagePath("file:///android_asset");
+        try {
+            InputStreamReader reader =
+                    new InputStreamReader(context.getAssets().open("data.json"));
+            return gson.fromJson(reader, type);
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                Log.e("NetworkClass", "Error loading from assets: " + e.getMessage(), e);
+            }
             return null;
         }
     }
