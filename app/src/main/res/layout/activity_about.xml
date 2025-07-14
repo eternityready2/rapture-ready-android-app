@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
+    android:id="@+id/about_activity_root"
     tools:context=".activity.About">
 
     <com.google.android.material.appbar.AppBarLayout

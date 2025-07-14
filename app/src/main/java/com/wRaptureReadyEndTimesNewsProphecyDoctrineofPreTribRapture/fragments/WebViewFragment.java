@@ -3,6 +3,7 @@ package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
@@ -84,6 +88,20 @@ public class WebViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            mlp.topMargin = insets.top;
+            mlp.leftMargin = insets.left;
+            mlp.bottomMargin = insets.bottom;
+            mlp.rightMargin = insets.right;
+            v.setLayoutParams(mlp);
+
+            // Return CONSUMED if you don't want the window insets to keep passing
+            // down to descendant views.
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         navigationView = view.findViewById(R.id.bottomNavigationView);
         pager2 = view.findViewById(R.id.viewpager2);
@@ -163,7 +181,7 @@ public class WebViewFragment extends Fragment {
                                 Menu.NONE, i, Menu.NONE, button.text);
                         Glide.with(this)
                                 .asDrawable()
-                                .load(Constants.BASE_URL + button.icon)
+                                .load(Uri.parse(Constants.BASE_IMAGE_PATH + button.icon))
                                 .override(48, 48)
                                 .into(new CustomTarget<Drawable>() {
                                     @Override

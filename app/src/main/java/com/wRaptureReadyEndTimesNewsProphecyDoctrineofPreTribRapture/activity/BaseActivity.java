@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
 import androidx.preference.PreferenceManager;
 
 import com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ThemeModel;
@@ -22,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         //setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Integer colorPosition = preferences.getInt(ThemeModel.COLOR_KEY, 0);
@@ -44,5 +46,10 @@ public class BaseActivity extends AppCompatActivity {
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
