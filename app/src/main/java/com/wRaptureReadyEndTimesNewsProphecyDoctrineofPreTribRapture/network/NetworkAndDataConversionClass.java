@@ -54,7 +54,7 @@ public class NetworkAndDataConversionClass {
             Log.e("NetworkClass", "Error fetching data: " + e.getMessage(), e);
 
             ApiResponse.Data data = getDataFromCache(context);
-            if (data != null) { return getSections(data); } else { return null; }
+            if (data != null) { return getSections(data); } else { return new ArrayList<>(); }
         }
     }
 

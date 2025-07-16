@@ -1,21 +1,26 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Gson - keep model classes used in JSON parsing
+-keepclassmembers class com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.** {
+    <fields>;
+    <methods>;
+}
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep all inner classes of ApiResponse (like Data, Section)
+-keep class com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ApiResponse$* {
+    <fields>;
+    <methods>;
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep ButtonItem (used in lists)
+-keep class com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.data.ButtonItem {
+    <fields>;
+    <methods>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# General rule for Gson: prevent stripping of classes with no-arg constructors
+-keep class * {
+    public <init>();
+}
+
+# (Optional but safe) Keep anything used by Gson
+-keepattributes Signature
+-keepattributes *Annotation*

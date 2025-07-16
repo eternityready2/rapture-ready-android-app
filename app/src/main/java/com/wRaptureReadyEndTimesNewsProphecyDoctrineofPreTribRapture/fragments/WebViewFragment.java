@@ -3,7 +3,6 @@ package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.fragments;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -16,9 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
@@ -89,20 +85,6 @@ public class WebViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            mlp.topMargin = insets.top;
-            mlp.leftMargin = insets.left;
-            mlp.bottomMargin = insets.bottom;
-            mlp.rightMargin = insets.right;
-            v.setLayoutParams(mlp);
-
-            // Return CONSUMED if you don't want the window insets to keep passing
-            // down to descendant views.
-            return WindowInsetsCompat.CONSUMED;
-        });
-
         navigationView = view.findViewById(R.id.bottomNavigationView);
         pager2 = view.findViewById(R.id.viewpager2);
         toolbar = view.findViewById(R.id.toolbar);
@@ -170,6 +152,11 @@ public class WebViewFragment extends Fragment {
         preferences.registerOnSharedPreferenceChangeListener(listener);
 
         ItemsData.getItems().observe(getViewLifecycleOwner(), items -> {
+            if (items == null || items.isEmpty()) {
+                Toast.makeText(requireContext(), "No data loaded", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             for (Pair<String, List<ButtonItem>> item: items) {
                 if (item.first.equalsIgnoreCase("BottomNav")) {
                     List<ButtonItem> buttons = item.second;
@@ -179,21 +166,29 @@ public class WebViewFragment extends Fragment {
                         ButtonItem button = buttons.get(i);
                         MenuItem menuItem = navigationView.getMenu().add(
                                 Menu.NONE, i, Menu.NONE, button.text);
-                        Glide.with(this)
-                                .asDrawable()
-                                .load(Uri.parse(Constants.BASE_IMAGE_PATH + button.icon))
-                                .override(48, 48)
-                                .into(new CustomTarget<Drawable>() {
-                                    @Override
-                                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                        menuItem.setIcon(resource);
-                                    }
+                        if (button.icon != null && !button.icon.trim().isEmpty()) {
+                            Glide.with(this)
+                                    .asDrawable()
+                                    .load(Constants.BASE_URL + button.icon)
+                                    .override(48, 48)
+                                    .error(R.drawable.close) // Replace with your fallback icon
+                                    .into(new CustomTarget<Drawable>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                            menuItem.setIcon(resource);
+                                        }
 
-                                    @Override
-                                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                                        // Handle cleanup if needed
-                                    }
-                                });
+                                        @Override
+                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                                            // Optional cleanup
+                                        }
+                                    });
+                        } else {
+                            // Fallback icon if icon URL is invalid
+                            menuItem.setIcon(R.drawable.more); // Replace with your default icon
+                        }
+
+
 
                         runnableMap.put(menuItem.getItemId(), () -> {
                             if (Objects.requireNonNull(menuItem.getTitle()).toString()
@@ -206,7 +201,7 @@ public class WebViewFragment extends Fragment {
                                 pager2.setCurrentItem(menuItem.getItemId());
                                 Fragment fragment = adapter.getFragAt(pager2.getCurrentItem(), getChildFragmentManager());
                                 if (fragment instanceof WebViewContainer)
-                                    ((WebViewContainer) fragment).Return(button.link);
+                                    ((WebViewContainer) fragment).loadNewUrl(button.link);
                                 toolbar.setTitle(button.text);
                             }
                         } );

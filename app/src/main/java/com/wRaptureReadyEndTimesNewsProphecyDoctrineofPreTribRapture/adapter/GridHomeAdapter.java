@@ -1,6 +1,5 @@
 package com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture.adapter;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +49,17 @@ public class GridHomeAdapter extends BaseAdapter {
             textView.setText(data.get(position).text);
 
             ImageView icon = gridView.findViewById(R.id.icon);
-            Glide.with(icon)
-                    .load(Uri.parse(Constants.BASE_IMAGE_PATH + data.get(position).icon))
-                    .into(icon);
+            String iconUrl = data.get(position).icon;
+
+            if (iconUrl != null && !iconUrl.trim().isEmpty()) {
+                Glide.with(icon.getContext())
+                        .load(Constants.BASE_URL + iconUrl)
+                        .error(R.drawable.close)             // Optional
+                        .into(icon);
+            } else {
+                icon.setImageResource(R.drawable.about); // Optional fallback
+            }
+
 
             gridView.setOnClickListener(v -> listener.onItemClick(data.get(position)));
         } else {
