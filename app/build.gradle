@@ -3,6 +3,7 @@ plugins {
     id 'com.google.gms.google-services'
 }
 //key alias -> Key0 password -> ymcmb1913
+
 android {
     namespace "com.wRaptureReadyEndTimesNewsProphecyDoctrineofPreTribRapture"
     compileSdk 35
